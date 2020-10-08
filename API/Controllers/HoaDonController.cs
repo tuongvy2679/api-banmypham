@@ -13,7 +13,7 @@ namespace API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class HoaDonController : ControllerBase
-    {//gghhb
+    {
         private IHoaDonBusiness _hoaDonBusiness;
         public HoaDonController(IHoaDonBusiness hoaDonBusiness)
         {
