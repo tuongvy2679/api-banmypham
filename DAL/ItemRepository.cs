@@ -25,7 +25,8 @@ namespace DAL
                 "@item_group_id", model.item_group_id,
                 "@item_image", model.item_image,
                 "@item_name", model.item_name,
-                "@item_price", model.item_price);
+                "@item_price", model.item_price,
+                "@item_description", model.item_description);
                 if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
                 {
                     throw new Exception(Convert.ToString(result) + msgError);

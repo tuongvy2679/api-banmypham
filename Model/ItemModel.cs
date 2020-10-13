@@ -10,5 +10,6 @@ namespace Model
         public string item_name { get; set; }
         public string item_image { get; set; }
         public decimal? item_price { get; set; }
+        public string item_description { get; set; }
     }
 }
