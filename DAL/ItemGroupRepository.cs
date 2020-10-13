@@ -14,7 +14,6 @@ namespace DAL
         {
             _dbHelper = dbHelper;
         }
-        
         public List<ItemGroupModel> GetData()
         {
             string msgError = "";
