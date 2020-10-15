@@ -18,6 +18,15 @@ namespace BLL
         {
             return _res.Create(model);
         }
+        public bool Update(ItemModel model)
+        {
+            return _res.Update(model);
+        }
+
+        public bool Delete(string id)
+        {
+            return _res.Delete(id);
+        }
         public ItemModel GetDatabyID(string id)
         {
             return _res.GetDatabyID(id);

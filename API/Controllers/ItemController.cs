@@ -28,12 +28,37 @@ namespace API.Controllers
             return model;
         }
 
+
+        [Route("delete-item")]
+        [HttpPost]
+        public IActionResult DeleteItem([FromBody] Dictionary<string, object> formData)
+        {
+            string item_id = "";
+
+            if (formData.Keys.Contains("item_id") && !string.IsNullOrEmpty(Convert.ToString(formData["item_id"]))) { item_id = Convert.ToString(formData["item_id"]); }
+            _itemBusiness.Delete(item_id);
+            return Ok();
+        }
+
+        [Route("update-item")]
+        [HttpPost]
+        public ItemModel UpdateUser([FromBody] ItemModel model)
+
+        {
+            _itemBusiness.Update(model);
+
+            return model;
+        }
+
+
         [Route("get-by-id/{id}")]
         [HttpGet]
         public ItemModel GetDatabyID(string id)
         {
             return _itemBusiness.GetDatabyID(id);
         }
+        
+        
         [Route("get-all")]
         [HttpGet]
         public IEnumerable<ItemModel> GetDatabAll()

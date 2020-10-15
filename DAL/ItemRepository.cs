@@ -38,6 +38,50 @@ namespace DAL
                 throw ex;
             }
         }
+
+        public bool Delete(string id)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_item_delete",
+                "@item_id", id);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool Update(ItemModel model)
+        {
+            string msgError = "";
+            try
+            {
+                var result = _dbHelper.ExecuteScalarSProcedureWithTransaction(out msgError, "sp_item_update",
+                "@item_id", model.item_id,
+                "@item_group_id", model.item_group_id,
+                "@item_image", model.item_image,
+                "@item_name", model.item_name,
+                "@item_price", model.item_price,
+                "@item_description", model.item_description);
+                if ((result != null && !string.IsNullOrEmpty(result.ToString())) || !string.IsNullOrEmpty(msgError))
+                {
+                    throw new Exception(Convert.ToString(result) + msgError);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public ItemModel GetDatabyID(string id)
         {
             string msgError = "";

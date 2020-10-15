@@ -10,8 +10,9 @@ namespace DAL
         UserModel GetUser(string username, string password);
         UserModel GetDatabyID(string id);
         bool Create(UserModel model);
-        bool Update(UserModel model);
         bool Delete(string id);
+        bool Update(UserModel model);
+        
         List<UserModel> Search(int pageIndex, int pageSize, out long total, string hoten, string taikhoan);
     }
 }

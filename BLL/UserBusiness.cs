@@ -21,10 +21,7 @@ namespace BLL
             Secret = configuration["AppSettings:Secret"];
             _res = res;
         }
-        public bool Delete(string id)
-        {
-            return _res.Delete(id);
-        }
+        
         public UserModel Authenticate(string username, string password)
         {
             var user = _res.GetUser(username, password);
@@ -63,6 +60,11 @@ namespace BLL
         public bool Update(UserModel model)
         {
             return _res.Update(model);
+        }
+
+        public bool Delete(string id)
+        {
+            return _res.Delete(id);
         }
         public List<UserModel> Search(int pageIndex, int pageSize, out long total, string hoten, string taikhoan)
         {
