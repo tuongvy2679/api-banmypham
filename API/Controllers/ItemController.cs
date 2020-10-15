@@ -1,9 +1,12 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 using BLL;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Model;
@@ -12,20 +15,40 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   
     public class ItemController : ControllerBase
     {
+        private string _path;
         private IItemBusiness _itemBusiness;
         public ItemController(IItemBusiness itemBusiness)
         {
             _itemBusiness = itemBusiness;
         }
-
-        [Route("create-item")]
-        [HttpPost]
-        public ItemModel CreateItem([FromBody] ItemModel model)
+        public string SaveFileFromBase64String(string RelativePathFileName, string dataFromBase64String)
         {
-            _itemBusiness.Create(model);
-            return model;
+            if (dataFromBase64String.Contains("base64,"))
+            {
+                dataFromBase64String = dataFromBase64String.Substring(dataFromBase64String.IndexOf("base64,", 0) + 7);
+            }
+            return WriteFileToAuthAccessFolder(RelativePathFileName, dataFromBase64String);
+        }
+        public string WriteFileToAuthAccessFolder(string RelativePathFileName, string base64StringData)
+        {
+            try
+            {
+                string result = "";
+                string serverRootPathFolder = _path;
+                string fullPathFile = $@"{serverRootPathFolder}\{RelativePathFileName}";
+                string fullPathFolder = System.IO.Path.GetDirectoryName(fullPathFile);
+                if (!Directory.Exists(fullPathFolder))
+                    Directory.CreateDirectory(fullPathFolder);
+                System.IO.File.WriteAllBytes(fullPathFile, Convert.FromBase64String(base64StringData));
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
 
@@ -40,16 +63,53 @@ namespace API.Controllers
             return Ok();
         }
 
-        [Route("update-item")]
-        [HttpPost]
-        public ItemModel UpdateUser([FromBody] ItemModel model)
 
+        [Route("create-item")]
+        [HttpPost]
+        public ItemModel CreateItem([FromBody] ItemModel model)
         {
-            _itemBusiness.Update(model);
+            if (model.item_image != null)
+            {
+                var arrData = model.item_image.Split(';');
+                if (arrData.Length == 3)
+                {
+                    var savePath = $@"assets/images/{arrData[0]}";
+                    model.item_image = $"{savePath}";
+                    SaveFileFromBase64String(savePath, arrData[2]);
+                }
+            }
+
+            model.item_id = Guid.NewGuid().ToString();
+
+            _itemBusiness.Create(model);
 
             return model;
         }
 
+
+        [Route("update-item")]
+        [HttpPost]
+        public ItemModel UpdateItem([FromBody] ItemModel model)
+        {
+            if (model.item_image != null)
+            {
+                var arrData = model.item_image.Split(';');
+                if (arrData.Length == 3)
+                {
+                    var savePath = $@"assets/images/{arrData[0]}";
+                    model.item_image = $"{savePath}";
+                    SaveFileFromBase64String(savePath, arrData[2]);
+                }
+            }
+            _itemBusiness.Update(model);
+            return model;
+        }
+        [Route("get-all")]
+        [HttpGet]
+        public IEnumerable<ItemModel> GetDataAll()
+        {
+            return _itemBusiness.GetDataAll();
+        }
 
         [Route("get-by-id/{id}")]
         [HttpGet]
@@ -57,14 +117,7 @@ namespace API.Controllers
         {
             return _itemBusiness.GetDatabyID(id);
         }
-        
-        
-        [Route("get-all")]
-        [HttpGet]
-        public IEnumerable<ItemModel> GetDatabAll()
-        {
-            return _itemBusiness.GetDataAll();
-        }
+
 
         [Route("search")]
         [HttpPost]
@@ -74,14 +127,24 @@ namespace API.Controllers
             try
             {
                 var page = int.Parse(formData["page"].ToString());
+
                 var pageSize = int.Parse(formData["pageSize"].ToString());
-                string item_group_id = "";
-                if (formData.Keys.Contains("item_group_id") && !string.IsNullOrEmpty(Convert.ToString(formData["item_group_id"]))) { item_group_id = Convert.ToString(formData["item_group_id"]); }
+
+                string item_name = "";
+
+                if (formData.Keys.Contains("hoten") && !string.IsNullOrEmpty(Convert.ToString(formData["hoten"]))) { item_name = Convert.ToString(formData["item_name"]); }
+
+               
                 long total = 0;
-                var data = _itemBusiness.Search(page, pageSize,out total,  item_group_id);
+
+                var data = _itemBusiness.Search(page, pageSize, out total, item_name);
+
                 response.TotalItems = total;
+
                 response.Data = data;
+              
                 response.Page = page;
+
                 response.PageSize = pageSize;
             }
             catch (Exception ex)

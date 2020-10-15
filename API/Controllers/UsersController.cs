@@ -119,9 +119,7 @@ namespace API.Controllers
         [Route("update-user")]
         [HttpPost]
         public UserModel UpdateUser([FromBody] UserModel model)
-
         {
-
             if (model.image_url != null)
             {
                 var arrData = model.image_url.Split(';');
@@ -133,19 +131,16 @@ namespace API.Controllers
                 }
             }
             _userBusiness.Update(model);
-
             return model;
         }
         
-
         [Route("get-by-id/{id}")]
         [HttpGet]
         public UserModel GetDatabyID(string id)
         {
             return _userBusiness.GetDatabyID(id);
         }
-        
-        
+                
         
         [Route("search")]
         [HttpPost]
