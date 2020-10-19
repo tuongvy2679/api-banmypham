@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL;
+using BLL.Interfaces;
 using DAL;
 using DAL.Helper;
 using Helper;
@@ -77,6 +78,8 @@ namespace API
             services.AddTransient<IHoaDonBusiness, HoaDonBusiness>();
             services.AddTransient<IUserBusiness, UserBusiness>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<INewsBusiness, NewsBusiness>();
+            services.AddTransient<INewsReponsitory, NewsReponsitory>(); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

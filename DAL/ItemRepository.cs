@@ -113,7 +113,7 @@ namespace DAL
                 throw ex;
             }
         }
-        public List<ItemModel> Search(int pageIndex, int pageSize, out long total, string item_group_id)
+        public List<ItemModel> Search(int pageIndex, int pageSize, out long total, string item_name)
         {
             string msgError = "";
             total = 0;
@@ -122,7 +122,7 @@ namespace DAL
                 var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_item_search",
                     "@page_index", pageIndex,
                     "@page_size", pageSize,
-                    "@item_group_id", item_group_id);
+                    "@item_name", item_name);
                 if (!string.IsNullOrEmpty(msgError))
                     throw new Exception(msgError);
                 if (dt.Rows.Count > 0) total = (long)dt.Rows[0]["RecordCount"];

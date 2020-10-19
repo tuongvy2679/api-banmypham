@@ -16,11 +16,11 @@ namespace API.Controllers
     [Route("api/[controller]")]
     [ApiController]
    
-    public class ItemController : ControllerBase
+    public class ItemsController : ControllerBase
     {
         private string _path;
         private IItemBusiness _itemBusiness;
-        public ItemController(IItemBusiness itemBusiness)
+        public ItemsController(IItemBusiness itemBusiness)
         {
             _itemBusiness = itemBusiness;
         }
@@ -104,12 +104,15 @@ namespace API.Controllers
             _itemBusiness.Update(model);
             return model;
         }
+
+
         [Route("get-all")]
         [HttpGet]
         public IEnumerable<ItemModel> GetDataAll()
         {
             return _itemBusiness.GetDataAll();
         }
+
 
         [Route("get-by-id/{id}")]
         [HttpGet]
@@ -127,24 +130,14 @@ namespace API.Controllers
             try
             {
                 var page = int.Parse(formData["page"].ToString());
-
                 var pageSize = int.Parse(formData["pageSize"].ToString());
-
-                string item_name = "";
-
-                if (formData.Keys.Contains("hoten") && !string.IsNullOrEmpty(Convert.ToString(formData["hoten"]))) { item_name = Convert.ToString(formData["item_name"]); }
-
-               
+                string item_group_id = "";
+                if (formData.Keys.Contains("item_group_id") && !string.IsNullOrEmpty(Convert.ToString(formData["item_group_id"]))) { item_group_id = Convert.ToString(formData["item_group_id"]); }
                 long total = 0;
-
-                var data = _itemBusiness.Search(page, pageSize, out total, item_name);
-
+                var data = _itemBusiness.Search(page, pageSize, out total, item_group_id);
                 response.TotalItems = total;
-
                 response.Data = data;
-              
                 response.Page = page;
-
                 response.PageSize = pageSize;
             }
             catch (Exception ex)
@@ -153,6 +146,5 @@ namespace API.Controllers
             }
             return response;
         }
-
     }
 }
