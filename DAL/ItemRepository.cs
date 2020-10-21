@@ -113,6 +113,23 @@ namespace DAL
                 throw ex;
             }
         }
+
+        public List<ItemModel> GetDataSameItem(string item_group_id)
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_item_same_type", "@item_group_id", item_group_id);
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<ItemModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public List<ItemModel> Search1(int pageIndex, int pageSize, out long total, string item_name)
         {
             string msgError = "";

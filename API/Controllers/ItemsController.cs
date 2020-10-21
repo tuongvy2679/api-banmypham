@@ -113,6 +113,13 @@ namespace API.Controllers
             return _itemBusiness.GetDataAll();
         }
 
+        [Route("get-same-item/{item_group_id}")]
+        [HttpGet]
+        public IEnumerable<ItemModel> GetDataSameItem(string item_group_id)
+        {
+            return _itemBusiness.GetDataSameItem(item_group_id);
+        }
+
         //[Route("get-all")]
         //[HttpGet]
         //public IEnumerable<ItemModel> GetDatabAll()
@@ -138,10 +145,10 @@ namespace API.Controllers
             {
                 var page = int.Parse(formData["page"].ToString());
                 var pageSize = int.Parse(formData["pageSize"].ToString());
-                string item_group_id = "";
-                if (formData.Keys.Contains("item_group_id") && !string.IsNullOrEmpty(Convert.ToString(formData["item_group_id"]))) { item_group_id = Convert.ToString(formData["item_group_id"]); }
+                string item_name = "";
+                if (formData.Keys.Contains("item_name") && !string.IsNullOrEmpty(Convert.ToString(formData["item_name"]))) { item_name = Convert.ToString(formData["item_name"]); }
                 long total = 0;
-                var data = _itemBusiness.Search1(page, pageSize, out total, item_group_id);
+                var data = _itemBusiness.Search1(page, pageSize, out total, item_name);
                 response.TotalItems = total;
                 response.Data = data;
                 response.Page = page;
@@ -169,7 +176,7 @@ namespace API.Controllers
                 var data = _itemBusiness.Search(page, pageSize, out total, item_group_id);
                 response.TotalItems = total;
                 response.Data = data;
-                response.Page = page;
+                response.Page = page;   
                 response.PageSize = pageSize;
             }
             catch (Exception ex)
