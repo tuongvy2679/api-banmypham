@@ -1,16 +1,13 @@
-﻿//using Model;
-//using System;
-//using System.Collections.Generic;
-//using System.Text;
+﻿using Model;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-//namespace DAL
-//{
-//    public partial interface INewsRepository
-//    {
-       
+namespace DAL
+{
+    public partial interface INewsRepository
+    {
+        List<NewsModel> GetDataAll();
 
-       
-//        List<NewsModel> GetDataAll();
-       
-//    }
-//}
+    }
+}
