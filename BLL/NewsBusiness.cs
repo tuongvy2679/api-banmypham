@@ -22,6 +22,31 @@ namespace BLL
         }
 
 
+        //admin
+        public bool Create(NewsModel model)
+        {
+            return _res.Create(model);
+        }
+        public bool Update(NewsModel model)
+        {
+            return _res.Update(model);
+        }
+
+        public bool Delete(string id)
+        {
+            return _res.Delete(id);
+        }
+        public NewsModel GetDatabyID(string id)
+        {
+            return _res.GetDatabyID(id);
+        }
+
+        public List<NewsModel> Search1(int pageIndex, int pageSize, out long total, string tt_name)
+        {
+            return _res.Search1(pageIndex, pageSize, out total, tt_name);
+        }
+
+
     }
 
 }
