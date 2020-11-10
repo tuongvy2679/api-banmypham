@@ -81,7 +81,6 @@ namespace DAL
             }
         }
 
-
         public ItemModel GetDatabyID(string id)
         {
             string msgError = "";
@@ -170,5 +169,6 @@ namespace DAL
                 throw ex;
             }
         }
+    
     }
 }
