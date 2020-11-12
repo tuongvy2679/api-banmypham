@@ -113,5 +113,7 @@ namespace API.Controllers
             _newsBusiness.Update(model);
             return model;
         }
+
+
     }
 }
