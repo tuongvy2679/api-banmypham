@@ -18,6 +18,17 @@ namespace BLL
         {
             return _res.Create(model);
         }
+
+        public List<HoaDonModel> GetDataAll()
+        {
+            return _res.GetDataAll();
+        }
+
+        public List<HoaDonModel> Search1(int pageIndex, int pageSize, out long total, string ho_ten)
+        {
+            return _res.Search1(pageIndex, pageSize, out total, ho_ten);
+        }
+
     }
 
 }

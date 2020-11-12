@@ -15,6 +15,22 @@ namespace DAL
             _dbHelper = dbHelper;
         }
 
+        public List<HoaDonModel> GetDataAll()
+        {
+            string msgError = "";
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_hoadon_all");
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                return dt.ConvertTo<HoaDonModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool Create(HoaDonModel model)
         {
             string msgError = "";
@@ -36,5 +52,28 @@ namespace DAL
                 throw ex;
             }
         }
+
+
+        public List<HoaDonModel> Search1(int pageIndex, int pageSize, out long total, string tt_name)
+        {
+            string msgError = "";
+            total = 0;
+            try
+            {
+                var dt = _dbHelper.ExecuteSProcedureReturnDataTable(out msgError, "sp_hoadon_search1",
+                    "@page_index", pageIndex,
+                    "@page_size", pageSize,
+                    "@ho_ten", tt_name);
+                if (!string.IsNullOrEmpty(msgError))
+                    throw new Exception(msgError);
+                if (dt.Rows.Count > 0) total = (long)dt.Rows[0]["RecordCount"];
+                return dt.ConvertTo<HoaDonModel>().ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

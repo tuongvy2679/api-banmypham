@@ -80,6 +80,8 @@ namespace API
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<INewsBusiness, NewsBusiness>();
             services.AddTransient<INewsRepository, NewsReponsitory>();
+            services.AddTransient<ILoaispBusiness, LoaispBusiness>();
+            services.AddTransient<ILoaispRepository, LoaispReponsitory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
